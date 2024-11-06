@@ -1,0 +1,1438 @@
+2024-11-02 18:10:22.617 | DEBUG    | __main__:main_train:35 - Entering 'main' (args=(Namespace(model='SepReformer_Large_DM_WSJ0', engine_mode='train', sample_file=None, out_wav_dir=None),), kwargs={})
+2024-11-02 18:10:22.629 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:20 - Entering 'parse_yaml' (args=('D:\\PythonProject-RequiredCourse\\4th↑ AIgorithmDesign_WUJIASONG\\SepReformer-main_NowUsing Model Trained by Myself\\models\\SepReformer_Large_DM_WSJ0\\configs.yaml',), kwargs={})
+2024-11-02 18:10:22.644 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:20 - Exiting 'parse_yaml' (result={'config': {'dataset': {'max_len': 30500, 'sampling_rate': 8000, 'scp_dir': './data/scp_max_16k_wsj0', 'train': {'mixture': 'tr_mix.scp', 'spk1': 'tr_s1.scp', 'spk2': 'tr_s2.scp', 'dynamic_mixing': True}, 'valid': {'mixture': 'cv_mix.scp', 'spk1': 'cv_s1.scp', 'spk2': 'cv_s2.scp'}, 'test': {'mixture': 'tt_mix.scp', 'spk1': 'tt_s1.scp', 'spk2': 'tt_s2.scp'}}, 'dataloader': {'batch_size': 16, 'pin_memory': False, 'num_workers': 12, 'drop_last': False}, 'model': {'num_stages': 4, 'num_spks': 2, 'module_audio_enc': {'in_channels': 1, 'out_channels': 256, 'kernel_size': 16, 'stride': 4, 'groups': 1, 'bias': False}, 'module_feature_projector': {'num_channels': 256, 'in_channels': 256, 'out_channels': 256, 'kernel_size': 1, 'bias': False}, 'module_separator': {'num_stages': 4, 'relative_positional_encoding': {'in_channels': 256, 'num_heads': 8, 'maxlen': 2000, 'embed_v': False}, 'enc_stage': {'global_blocks': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}, 'local_blocks': {'in_channels': 256, 'kernel_size': 65, 'dropout_rate': 0.1}, 'down_conv_layer': {'in_channels': 256, 'samp_kernel_size': 5}}, 'spk_split_stage': {'in_channels': 256, 'num_spks': 2}, 'simple_fusion': {'out_channels': 256}, 'dec_stage': {'num_spks': 2, 'global_blocks': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}, 'local_blocks': {'in_channels': 256, 'kernel_size': 65, 'dropout_rate': 0.1}, 'spk_attention': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}}}, 'module_output_layer': {'in_channels': 256, 'out_channels': 256, 'num_spks': 2}, 'module_audio_dec': {'in_channels': 256, 'out_channels': 1, 'kernel_size': 16, 'stride': 4, 'bias': False}}, 'criterion': {'name': ['PIT_SISNR_mag', 'PIT_SISNR_time', 'PIT_SISNRi', 'PIT_SDRi'], 'PIT_SISNR_mag': {'frame_length': 512, 'frame_shift': 128, 'window': 'hann', 'num_stages': 4, 'num_spks': 2, 'scale_inv': True, 'mel_opt': False}, 'PIT_SISNR_time': {'num_spks': 2, 'scale_inv': True}, 'PIT_SISNRi': {'num_spks': 2, 'scale_inv': True}, 'PIT_SDRi': {'dump': 0}}, 'optimizer': {'name': ['AdamW'], 'AdamW': {'lr': 0.0002, 'weight_decay': 0.01}}, 'scheduler': {'name': ['ReduceLROnPlateau', 'WarmupConstantSchedule'], 'ReduceLROnPlateau': {'mode': 'min', 'min_lr': 1e-10, 'factor': 0.8, 'patience': 2}, 'WarmupConstantSchedule': {'warmup_steps': 1000}}, 'check_computations': {'dummy_len': 16000}, 'engine': {'max_epoch': 200, 'gpuid': '0,1,2,3', 'mvn': False, 'clip_norm': 5, 'start_scheduling': 100, 'test_epochs': [100, 120, 150, 180, 200, 220, 240, 250, 260, 280, 290]}}})
+2024-11-02 18:10:22.645 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:26 - Entering 'get_dataloaders' (args=(Namespace(model='SepReformer_Large_DM_WSJ0', engine_mode='train', sample_file=None, out_wav_dir=None), {'max_len': 30500, 'sampling_rate': 8000, 'scp_dir': './data/scp_max_16k_wsj0', 'train': {'mixture': 'tr_mix.scp', 'spk1': 'tr_s1.scp', 'spk2': 'tr_s2.scp', 'dynamic_mixing': True}, 'valid': {'mixture': 'cv_mix.scp', 'spk1': 'cv_s1.scp', 'spk2': 'cv_s2.scp'}, 'test': {'mixture': 'tt_mix.scp', 'spk1': 'tt_s1.scp', 'spk2': 'tt_s2.scp'}}, {'batch_size': 16, 'pin_memory': False, 'num_workers': 12, 'drop_last': False}), kwargs={})
+2024-11-02 18:10:22.645 | DEBUG    | models.SepReformer_Large_DM_WSJ0.dataset:get_dataloaders:21 - Entering 'MyDataset' (args=(), kwargs={'max_len': 30500, 'fs': 8000, 'partition': 'train', 'wave_scp_srcs': ['./data/scp_max_16k_wsj0\\tr_s1.scp', './data/scp_max_16k_wsj0\\tr_s2.scp'], 'wave_scp_mix': './data/scp_max_16k_wsj0\\tr_mix.scp', 'dynamic_mixing': True})
+2024-11-02 18:10:22.717 | INFO     | models.SepReformer_Large_DM_WSJ0.dataset:__init__:75 - Create MyDataset for ./data/scp_max_16k_wsj0\tr_mix.scp with 20000 utterances
+2024-11-02 18:10:22.717 | DEBUG    | models.SepReformer_Large_DM_WSJ0.dataset:get_dataloaders:21 - Exiting 'MyDataset' (result=<models.SepReformer_Large_DM_WSJ0.dataset.MyDataset object at 0x0000024F7C1E82B0>)
+2024-11-02 18:10:22.718 | DEBUG    | models.SepReformer_Large_DM_WSJ0.dataset:get_dataloaders:21 - Entering 'MyDataset' (args=(), kwargs={'max_len': 30500, 'fs': 8000, 'partition': 'valid', 'wave_scp_srcs': ['./data/scp_max_16k_wsj0\\cv_s1.scp', './data/scp_max_16k_wsj0\\cv_s2.scp'], 'wave_scp_mix': './data/scp_max_16k_wsj0\\cv_mix.scp', 'dynamic_mixing': False})
+2024-11-02 18:10:22.736 | INFO     | models.SepReformer_Large_DM_WSJ0.dataset:__init__:75 - Create MyDataset for ./data/scp_max_16k_wsj0\cv_mix.scp with 5000 utterances
+2024-11-02 18:10:22.736 | DEBUG    | models.SepReformer_Large_DM_WSJ0.dataset:get_dataloaders:21 - Exiting 'MyDataset' (result=<models.SepReformer_Large_DM_WSJ0.dataset.MyDataset object at 0x0000024F7C1E81F0>)
+2024-11-02 18:10:22.737 | DEBUG    | models.SepReformer_Large_DM_WSJ0.dataset:get_dataloaders:21 - Entering 'MyDataset' (args=(), kwargs={'max_len': 30500, 'fs': 8000, 'partition': 'test', 'wave_scp_srcs': ['./data/scp_max_16k_wsj0\\tt_s1.scp', './data/scp_max_16k_wsj0\\tt_s2.scp'], 'wave_scp_mix': './data/scp_max_16k_wsj0\\tt_mix.scp', 'dynamic_mixing': False})
+2024-11-02 18:10:22.749 | INFO     | models.SepReformer_Large_DM_WSJ0.dataset:__init__:75 - Create MyDataset for ./data/scp_max_16k_wsj0\tt_mix.scp with 3000 utterances
+2024-11-02 18:10:22.749 | DEBUG    | models.SepReformer_Large_DM_WSJ0.dataset:get_dataloaders:21 - Exiting 'MyDataset' (result=<models.SepReformer_Large_DM_WSJ0.dataset.MyDataset object at 0x0000024F7C1E8520>)
+2024-11-02 18:10:22.750 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:26 - Exiting 'get_dataloaders' (result={'train': <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8250>, 'valid': <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8190>, 'test': <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8430>})
+2024-11-02 18:10:22.750 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:30 - Entering 'Model' (args=(), kwargs={'num_stages': 4, 'num_spks': 2, 'module_audio_enc': {'in_channels': 1, 'out_channels': 256, 'kernel_size': 16, 'stride': 4, 'groups': 1, 'bias': False}, 'module_feature_projector': {'num_channels': 256, 'in_channels': 256, 'out_channels': 256, 'kernel_size': 1, 'bias': False}, 'module_separator': {'num_stages': 4, 'relative_positional_encoding': {'in_channels': 256, 'num_heads': 8, 'maxlen': 2000, 'embed_v': False}, 'enc_stage': {'global_blocks': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}, 'local_blocks': {'in_channels': 256, 'kernel_size': 65, 'dropout_rate': 0.1}, 'down_conv_layer': {'in_channels': 256, 'samp_kernel_size': 5}}, 'spk_split_stage': {'in_channels': 256, 'num_spks': 2}, 'simple_fusion': {'out_channels': 256}, 'dec_stage': {'num_spks': 2, 'global_blocks': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}, 'local_blocks': {'in_channels': 256, 'kernel_size': 65, 'dropout_rate': 0.1}, 'spk_attention': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}}}, 'module_output_layer': {'in_channels': 256, 'out_channels': 256, 'num_spks': 2}, 'module_audio_dec': {'in_channels': 256, 'out_channels': 1, 'kernel_size': 16, 'stride': 4, 'bias': False}})
+2024-11-02 18:10:23.130 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:30 - Exiting 'Model' (result=Model(
+  (audio_encoder): AudioEncoder(
+    (conv1d): Conv1d(1, 256, kernel_size=(16,), stride=(4,), bias=False)
+    (gelu): GELU(approximate='none')
+  )
+  (feature_projector): FeatureProjector(
+    (norm): GroupNorm(1, 256, eps=1e-08, affine=True)
+    (conv1d): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+  )
+  (separator): Separator(
+    (pos_emb): RelativePositionalEncoding(
+      (pe_k): Embedding(4000, 32)
+    )
+    (enc_stages): ModuleList(
+      (0-3): 4 x SepEncStage(
+        (g_block_1): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_1): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (g_block_2): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_2): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (downconv): DownConvLayer(
+          (down_conv): Conv1d(256, 256, kernel_size=(5,), stride=(2,), padding=(2,), groups=256)
+          (BN): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (gelu): GELU(approximate='none')
+        )
+      )
+    )
+    (bottleneck_G): SepEncStage(
+      (g_block_1): GlobalBlock(
+        (block): ModuleDict(
+          (ega): EGA(
+            (block): ModuleDict(
+              (self_attn): MultiHeadAttention(
+                (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                (dropout): Dropout(p=0.1, inplace=False)
+                (Layer_scale): LayerScale()
+              )
+              (linear): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=256, bias=True)
+                (2): Sigmoid()
+              )
+            )
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+      (l_block_1): LocalBlock(
+        (block): ModuleDict(
+          (cla): CLA(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear1): Linear(in_features=256, out_features=512, bias=True)
+            (GLU): GLU(dim=-1)
+            (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+            (linear2): Linear(in_features=256, out_features=512, bias=True)
+            (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (linear3): Sequential(
+              (0): GELU(approximate='none')
+              (1): Linear(in_features=512, out_features=256, bias=True)
+              (2): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+      (g_block_2): GlobalBlock(
+        (block): ModuleDict(
+          (ega): EGA(
+            (block): ModuleDict(
+              (self_attn): MultiHeadAttention(
+                (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                (dropout): Dropout(p=0.1, inplace=False)
+                (Layer_scale): LayerScale()
+              )
+              (linear): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=256, bias=True)
+                (2): Sigmoid()
+              )
+            )
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+      (l_block_2): LocalBlock(
+        (block): ModuleDict(
+          (cla): CLA(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear1): Linear(in_features=256, out_features=512, bias=True)
+            (GLU): GLU(dim=-1)
+            (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+            (linear2): Linear(in_features=256, out_features=512, bias=True)
+            (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (linear3): Sequential(
+              (0): GELU(approximate='none')
+              (1): Linear(in_features=512, out_features=256, bias=True)
+              (2): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+    )
+    (spk_split_block): SpkSplitStage(
+      (linear): Sequential(
+        (0): Conv1d(256, 2048, kernel_size=(1,), stride=(1,))
+        (1): GLU(dim=-2)
+        (2): Conv1d(1024, 512, kernel_size=(1,), stride=(1,))
+      )
+      (norm): GroupNorm(1, 256, eps=1e-08, affine=True)
+    )
+    (simple_fusion): ModuleList(
+      (0-3): 4 x Conv1d(512, 256, kernel_size=(1,), stride=(1,))
+    )
+    (dec_stages): ModuleList(
+      (0-3): 4 x SepDecStage(
+        (g_block_1): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_1): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (spk_attn_1): SpkAttention(
+          (self_attn): MultiHeadAttention(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear_q): Linear(in_features=256, out_features=256, bias=True)
+            (linear_k): Linear(in_features=256, out_features=256, bias=True)
+            (linear_v): Linear(in_features=256, out_features=256, bias=True)
+            (linear_out): Linear(in_features=256, out_features=256, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (Layer_scale): LayerScale()
+          )
+          (feed_forward): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+        (g_block_2): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_2): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (spk_attn_2): SpkAttention(
+          (self_attn): MultiHeadAttention(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear_q): Linear(in_features=256, out_features=256, bias=True)
+            (linear_k): Linear(in_features=256, out_features=256, bias=True)
+            (linear_v): Linear(in_features=256, out_features=256, bias=True)
+            (linear_out): Linear(in_features=256, out_features=256, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (Layer_scale): LayerScale()
+          )
+          (feed_forward): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+        (g_block_3): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_3): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (spk_attn_3): SpkAttention(
+          (self_attn): MultiHeadAttention(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear_q): Linear(in_features=256, out_features=256, bias=True)
+            (linear_k): Linear(in_features=256, out_features=256, bias=True)
+            (linear_v): Linear(in_features=256, out_features=256, bias=True)
+            (linear_out): Linear(in_features=256, out_features=256, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (Layer_scale): LayerScale()
+          )
+          (feed_forward): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+    )
+  )
+  (out_layer): OutputLayer(
+    (spe_block): Masking(
+      (gate_act): ReLU()
+    )
+    (end_conv1x1): Sequential(
+      (0): Linear(in_features=256, out_features=1024, bias=True)
+      (1): GLU(dim=-1)
+      (2): Linear(in_features=512, out_features=256, bias=True)
+    )
+  )
+  (audio_decoder): AudioDecoder(256, 1, kernel_size=(16,), stride=(4,), bias=False)
+  (out_layer_bn): ModuleList(
+    (0-3): 4 x OutputLayer(
+      (spe_block): Masking(
+        (gate_act): ReLU()
+      )
+      (end_conv1x1): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): GLU(dim=-1)
+        (2): Linear(in_features=512, out_features=256, bias=True)
+      )
+    )
+  )
+  (decoder_bn): ModuleList(
+    (0-3): 4 x AudioDecoder(256, 1, kernel_size=(16,), stride=(4,), bias=False)
+  )
+))
+2024-11-02 18:10:23.144 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:38 - Entering 'CriterionFactory' (args=({'name': ['PIT_SISNR_mag', 'PIT_SISNR_time', 'PIT_SISNRi', 'PIT_SDRi'], 'PIT_SISNR_mag': {'frame_length': 512, 'frame_shift': 128, 'window': 'hann', 'num_stages': 4, 'num_spks': 2, 'scale_inv': True, 'mel_opt': False}, 'PIT_SISNR_time': {'num_spks': 2, 'scale_inv': True}, 'PIT_SISNRi': {'num_spks': 2, 'scale_inv': True}, 'PIT_SDRi': {'dump': 0}}, device(type='cuda', index=0)), kwargs={})
+2024-11-02 18:10:23.145 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:38 - Exiting 'CriterionFactory' (result=CriterionFactory(config={'name': ['PIT_SISNR_mag', 'PIT_SISNR_time', 'PIT_SISNRi', 'PIT_SDRi'], 'PIT_SISNR_mag': {'frame_length': 512, 'frame_shift': 128, 'window': 'hann', 'num_stages': 4, 'num_spks': 2, 'scale_inv': True, 'mel_opt': False}, 'PIT_SISNR_time': {'num_spks': 2, 'scale_inv': True}, 'PIT_SISNRi': {'num_spks': 2, 'scale_inv': True}, 'PIT_SDRi': {'dump': 0}}, device=device(type='cuda', index=0)))
+2024-11-02 18:10:24.569 | INFO     | utils.util_implement:create_instance:27 - Creating PIT_SISNR_mag instance with args: {'frame_length': 512, 'frame_shift': 128, 'window': 'hann', 'num_stages': 4, 'num_spks': 2, 'scale_inv': True, 'mel_opt': False}
+2024-11-02 18:10:24.569 | DEBUG    | utils.util_implement:create_instance:28 - Entering 'PIT_SISNR_mag' (args=(device(type='cuda', index=0),), kwargs={'frame_length': 512, 'frame_shift': 128, 'window': 'hann', 'num_stages': 4, 'num_spks': 2, 'scale_inv': True, 'mel_opt': False})
+2024-11-02 18:10:24.570 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Entering 'STFT' (args=(device(type='cuda', index=0), 512, 128, 'hann'), kwargs={})
+2024-11-02 18:10:24.810 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Exiting 'STFT' (result=STFT(device=device(type='cuda', index=0), frame_length=512, frame_shift=128, window='hann', K=tensor([[[ 0.0000e+00,  1.3582e-06,  5.4340e-06,  ...,  1.2226e-05,
+           5.4340e-06,  1.3582e-06]],
+
+        [[ 0.0000e+00,  1.3581e-06,  5.4324e-06,  ...,  1.2218e-05,
+           5.4324e-06,  1.3581e-06]],
+
+        [[ 0.0000e+00,  1.3578e-06,  5.4274e-06,  ...,  1.2193e-05,
+           5.4274e-06,  1.3578e-06]],
+
+        ...,
+
+        [[ 0.0000e+00, -3.3333e-08,  2.6663e-07,  ...,  8.9942e-07,
+          -2.6663e-07,  3.3333e-08]],
+
+        [[ 0.0000e+00, -1.6668e-08,  1.3336e-07,  ...,  4.5001e-07,
+          -1.3336e-07,  1.6668e-08]],
+
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  ...,  0.0000e+00,
+           0.0000e+00,  0.0000e+00]]], device='cuda:0'), num_bins=257))
+2024-11-02 18:10:24.994 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Entering 'STFT' (args=(device(type='cuda', index=0), 512, 128, 'hann'), kwargs={})
+2024-11-02 18:10:24.995 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Exiting 'STFT' (result=STFT(device=device(type='cuda', index=0), frame_length=512, frame_shift=128, window='hann', K=tensor([[[ 0.0000e+00,  1.3582e-06,  5.4340e-06,  ...,  1.2226e-05,
+           5.4340e-06,  1.3582e-06]],
+
+        [[ 0.0000e+00,  1.3581e-06,  5.4324e-06,  ...,  1.2218e-05,
+           5.4324e-06,  1.3581e-06]],
+
+        [[ 0.0000e+00,  1.3578e-06,  5.4274e-06,  ...,  1.2193e-05,
+           5.4274e-06,  1.3578e-06]],
+
+        ...,
+
+        [[ 0.0000e+00, -3.3333e-08,  2.6663e-07,  ...,  8.9942e-07,
+          -2.6663e-07,  3.3333e-08]],
+
+        [[ 0.0000e+00, -1.6668e-08,  1.3336e-07,  ...,  4.5001e-07,
+          -1.3336e-07,  1.6668e-08]],
+
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  ...,  0.0000e+00,
+           0.0000e+00,  0.0000e+00]]], device='cuda:0'), num_bins=257))
+2024-11-02 18:10:24.999 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Entering 'STFT' (args=(device(type='cuda', index=0), 512, 128, 'hann'), kwargs={})
+2024-11-02 18:10:25.000 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Exiting 'STFT' (result=STFT(device=device(type='cuda', index=0), frame_length=512, frame_shift=128, window='hann', K=tensor([[[ 0.0000e+00,  1.3582e-06,  5.4340e-06,  ...,  1.2226e-05,
+           5.4340e-06,  1.3582e-06]],
+
+        [[ 0.0000e+00,  1.3581e-06,  5.4324e-06,  ...,  1.2218e-05,
+           5.4324e-06,  1.3581e-06]],
+
+        [[ 0.0000e+00,  1.3578e-06,  5.4274e-06,  ...,  1.2193e-05,
+           5.4274e-06,  1.3578e-06]],
+
+        ...,
+
+        [[ 0.0000e+00, -3.3333e-08,  2.6663e-07,  ...,  8.9942e-07,
+          -2.6663e-07,  3.3333e-08]],
+
+        [[ 0.0000e+00, -1.6668e-08,  1.3336e-07,  ...,  4.5001e-07,
+          -1.3336e-07,  1.6668e-08]],
+
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  ...,  0.0000e+00,
+           0.0000e+00,  0.0000e+00]]], device='cuda:0'), num_bins=257))
+2024-11-02 18:10:25.004 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Entering 'STFT' (args=(device(type='cuda', index=0), 512, 128, 'hann'), kwargs={})
+2024-11-02 18:10:25.004 | DEBUG    | utils.implements.criterions:<listcomp>:132 - Exiting 'STFT' (result=STFT(device=device(type='cuda', index=0), frame_length=512, frame_shift=128, window='hann', K=tensor([[[ 0.0000e+00,  1.3582e-06,  5.4340e-06,  ...,  1.2226e-05,
+           5.4340e-06,  1.3582e-06]],
+
+        [[ 0.0000e+00,  1.3581e-06,  5.4324e-06,  ...,  1.2218e-05,
+           5.4324e-06,  1.3581e-06]],
+
+        [[ 0.0000e+00,  1.3578e-06,  5.4274e-06,  ...,  1.2193e-05,
+           5.4274e-06,  1.3578e-06]],
+
+        ...,
+
+        [[ 0.0000e+00, -3.3333e-08,  2.6663e-07,  ...,  8.9942e-07,
+          -2.6663e-07,  3.3333e-08]],
+
+        [[ 0.0000e+00, -1.6668e-08,  1.3336e-07,  ...,  4.5001e-07,
+          -1.3336e-07,  1.6668e-08]],
+
+        [[ 0.0000e+00,  0.0000e+00,  0.0000e+00,  ...,  0.0000e+00,
+           0.0000e+00,  0.0000e+00]]], device='cuda:0'), num_bins=257))
+2024-11-02 18:10:25.008 | DEBUG    | utils.util_implement:create_instance:28 - Exiting 'PIT_SISNR_mag' (result=<PIT_SISNR_mag(device=device(type='cuda', index=0), frame_length=512, frame_shift=128, window='hann', num_stages=4, num_spks=2, scale_inv=True, mel_opt=False, stft = [STFT instance for 4 layers], mel_fb=Identity)>)
+2024-11-02 18:10:25.008 | INFO     | utils.util_implement:create_instance:27 - Creating PIT_SISNR_time instance with args: {'num_spks': 2, 'scale_inv': True}
+2024-11-02 18:10:25.009 | DEBUG    | utils.util_implement:create_instance:28 - Entering 'PIT_SISNR_time' (args=(device(type='cuda', index=0),), kwargs={'num_spks': 2, 'scale_inv': True})
+2024-11-02 18:10:25.009 | DEBUG    | utils.util_implement:create_instance:28 - Exiting 'PIT_SISNR_time' (result=<PIT_SISNR_time(device=device(type='cuda', index=0), num_spks=2, scale_inv=True)>)
+2024-11-02 18:10:25.009 | INFO     | utils.util_implement:create_instance:27 - Creating PIT_SISNRi instance with args: {'num_spks': 2, 'scale_inv': True}
+2024-11-02 18:10:25.009 | DEBUG    | utils.util_implement:create_instance:28 - Entering 'PIT_SISNRi' (args=(device(type='cuda', index=0),), kwargs={'num_spks': 2, 'scale_inv': True})
+2024-11-02 18:10:25.010 | DEBUG    | utils.util_implement:create_instance:28 - Exiting 'PIT_SISNRi' (result=<PIT_SISNRi(device=device(type='cuda', index=0), num_spks=2, scale_inv=True)>)
+2024-11-02 18:10:25.010 | INFO     | utils.util_implement:create_instance:27 - Creating PIT_SDRi instance with args: {'dump': 0}
+2024-11-02 18:10:25.010 | DEBUG    | utils.util_implement:create_instance:28 - Entering 'PIT_SDRi' (args=(device(type='cuda', index=0),), kwargs={'dump': 0})
+2024-11-02 18:10:25.010 | DEBUG    | utils.util_implement:create_instance:28 - Exiting 'PIT_SDRi' (result=<PIT_SDRi(device=device(type='cuda', index=0), dump=0)>)
+2024-11-02 18:10:25.011 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:39 - Entering 'OptimizerFactory' (args=({'name': ['AdamW'], 'AdamW': {'lr': 0.0002, 'weight_decay': 0.01}}, <generator object Module.parameters at 0x0000024F01DBD620>), kwargs={})
+2024-11-02 18:10:25.011 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:39 - Exiting 'OptimizerFactory' (result=OptimizerFactory(config={'name': ['AdamW'], 'AdamW': {'lr': 0.0002, 'weight_decay': 0.01}}, parameters_policy=<generator object Module.parameters at 0x0000024F01DBD620>))
+2024-11-02 18:10:25.011 | INFO     | utils.util_implement:create_instance:27 - Creating AdamW instance with args: {'lr': 0.0002, 'weight_decay': 0.01}
+2024-11-02 18:10:25.018 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:40 - Entering 'SchedulerFactory' (args=({'name': ['ReduceLROnPlateau', 'WarmupConstantSchedule'], 'ReduceLROnPlateau': {'mode': 'min', 'min_lr': 1e-10, 'factor': 0.8, 'patience': 2}, 'WarmupConstantSchedule': {'warmup_steps': 1000}}, [AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.0002
+    maximize: False
+    weight_decay: 0.01
+)]), kwargs={})
+2024-11-02 18:10:25.019 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:40 - Exiting 'SchedulerFactory' (result=SchedulerFactory(config={'name': ['ReduceLROnPlateau', 'WarmupConstantSchedule'], 'ReduceLROnPlateau': {'mode': 'min', 'min_lr': 1e-10, 'factor': 0.8, 'patience': 2}, 'WarmupConstantSchedule': {'warmup_steps': 1000}}, optimizers=[AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.0002
+    maximize: False
+    weight_decay: 0.01
+)]))
+2024-11-02 18:10:25.019 | INFO     | utils.util_implement:create_instance:27 - Creating ReduceLROnPlateau instance with args: {'mode': 'min', 'min_lr': 1e-10, 'factor': 0.8, 'patience': 2}
+2024-11-02 18:10:25.021 | INFO     | utils.util_implement:create_instance:27 - Creating WarmupConstantSchedule instance with args: {'warmup_steps': 1000}
+2024-11-02 18:10:25.021 | DEBUG    | utils.util_implement:create_instance:28 - Entering 'WarmupConstantSchedule' (args=(AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 0.0002
+    maximize: False
+    weight_decay: 0.01
+),), kwargs={'warmup_steps': 1000})
+2024-11-02 18:10:25.022 | DEBUG    | utils.util_implement:create_instance:28 - Exiting 'WarmupConstantSchedule' (result=<WarmupConstantSchedule(optimizer=AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 0.0002
+    lr: 0.0
+    maximize: False
+    weight_decay: 0.01
+), warmup_steps=1000, last_epoch=0, lr_lambda = <function WarmupConstantSchedule.__post_init__.<locals>.lr_lambda at 0x0000024F7D4CF760>)>)
+2024-11-02 18:10:25.022 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:43 - Entering 'Engine' (args=(Namespace(model='SepReformer_Large_DM_WSJ0', engine_mode='train', sample_file=None, out_wav_dir=None), {'dataset': {'max_len': 30500, 'sampling_rate': 8000, 'scp_dir': './data/scp_max_16k_wsj0', 'train': {'mixture': 'tr_mix.scp', 'spk1': 'tr_s1.scp', 'spk2': 'tr_s2.scp', 'dynamic_mixing': True}, 'valid': {'mixture': 'cv_mix.scp', 'spk1': 'cv_s1.scp', 'spk2': 'cv_s2.scp'}, 'test': {'mixture': 'tt_mix.scp', 'spk1': 'tt_s1.scp', 'spk2': 'tt_s2.scp'}}, 'dataloader': {'batch_size': 16, 'pin_memory': False, 'num_workers': 12, 'drop_last': False}, 'model': {'num_stages': 4, 'num_spks': 2, 'module_audio_enc': {'in_channels': 1, 'out_channels': 256, 'kernel_size': 16, 'stride': 4, 'groups': 1, 'bias': False}, 'module_feature_projector': {'num_channels': 256, 'in_channels': 256, 'out_channels': 256, 'kernel_size': 1, 'bias': False}, 'module_separator': {'num_stages': 4, 'relative_positional_encoding': {'in_channels': 256, 'num_heads': 8, 'maxlen': 2000, 'embed_v': False}, 'enc_stage': {'global_blocks': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}, 'local_blocks': {'in_channels': 256, 'kernel_size': 65, 'dropout_rate': 0.1}, 'down_conv_layer': {'in_channels': 256, 'samp_kernel_size': 5}}, 'spk_split_stage': {'in_channels': 256, 'num_spks': 2}, 'simple_fusion': {'out_channels': 256}, 'dec_stage': {'num_spks': 2, 'global_blocks': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}, 'local_blocks': {'in_channels': 256, 'kernel_size': 65, 'dropout_rate': 0.1}, 'spk_attention': {'in_channels': 256, 'num_mha_heads': 8, 'dropout_rate': 0.1}}}, 'module_output_layer': {'in_channels': 256, 'out_channels': 256, 'num_spks': 2}, 'module_audio_dec': {'in_channels': 256, 'out_channels': 1, 'kernel_size': 16, 'stride': 4, 'bias': False}}, 'criterion': {'name': ['PIT_SISNR_mag', 'PIT_SISNR_time', 'PIT_SISNRi', 'PIT_SDRi'], 'PIT_SISNR_mag': {'frame_length': 512, 'frame_shift': 128, 'window': 'hann', 'num_stages': 4, 'num_spks': 2, 'scale_inv': True, 'mel_opt': False}, 'PIT_SISNR_time': {'num_spks': 2, 'scale_inv': True}, 'PIT_SISNRi': {'num_spks': 2, 'scale_inv': True}, 'PIT_SDRi': {'dump': 0}}, 'optimizer': {'name': ['AdamW'], 'AdamW': {'lr': 0.0002, 'weight_decay': 0.01}}, 'scheduler': {'name': ['ReduceLROnPlateau', 'WarmupConstantSchedule'], 'ReduceLROnPlateau': {'mode': 'min', 'min_lr': 1e-10, 'factor': 0.8, 'patience': 2}, 'WarmupConstantSchedule': {'warmup_steps': 1000}}, 'check_computations': {'dummy_len': 16000}, 'engine': {'max_epoch': 200, 'gpuid': '0,1,2,3', 'mvn': False, 'clip_norm': 5, 'start_scheduling': 100, 'test_epochs': [100, 120, 150, 180, 200, 220, 240, 250, 260, 280, 290]}}, Model(
+  (audio_encoder): AudioEncoder(
+    (conv1d): Conv1d(1, 256, kernel_size=(16,), stride=(4,), bias=False)
+    (gelu): GELU(approximate='none')
+  )
+  (feature_projector): FeatureProjector(
+    (norm): GroupNorm(1, 256, eps=1e-08, affine=True)
+    (conv1d): Conv1d(256, 256, kernel_size=(1,), stride=(1,), bias=False)
+  )
+  (separator): Separator(
+    (pos_emb): RelativePositionalEncoding(
+      (pe_k): Embedding(4000, 32)
+    )
+    (enc_stages): ModuleList(
+      (0-3): 4 x SepEncStage(
+        (g_block_1): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_1): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (g_block_2): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_2): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (downconv): DownConvLayer(
+          (down_conv): Conv1d(256, 256, kernel_size=(5,), stride=(2,), padding=(2,), groups=256)
+          (BN): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (gelu): GELU(approximate='none')
+        )
+      )
+    )
+    (bottleneck_G): SepEncStage(
+      (g_block_1): GlobalBlock(
+        (block): ModuleDict(
+          (ega): EGA(
+            (block): ModuleDict(
+              (self_attn): MultiHeadAttention(
+                (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                (dropout): Dropout(p=0.1, inplace=False)
+                (Layer_scale): LayerScale()
+              )
+              (linear): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=256, bias=True)
+                (2): Sigmoid()
+              )
+            )
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+      (l_block_1): LocalBlock(
+        (block): ModuleDict(
+          (cla): CLA(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear1): Linear(in_features=256, out_features=512, bias=True)
+            (GLU): GLU(dim=-1)
+            (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+            (linear2): Linear(in_features=256, out_features=512, bias=True)
+            (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (linear3): Sequential(
+              (0): GELU(approximate='none')
+              (1): Linear(in_features=512, out_features=256, bias=True)
+              (2): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+      (g_block_2): GlobalBlock(
+        (block): ModuleDict(
+          (ega): EGA(
+            (block): ModuleDict(
+              (self_attn): MultiHeadAttention(
+                (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                (dropout): Dropout(p=0.1, inplace=False)
+                (Layer_scale): LayerScale()
+              )
+              (linear): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=256, bias=True)
+                (2): Sigmoid()
+              )
+            )
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+      (l_block_2): LocalBlock(
+        (block): ModuleDict(
+          (cla): CLA(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear1): Linear(in_features=256, out_features=512, bias=True)
+            (GLU): GLU(dim=-1)
+            (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+            (linear2): Linear(in_features=256, out_features=512, bias=True)
+            (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (linear3): Sequential(
+              (0): GELU(approximate='none')
+              (1): Linear(in_features=512, out_features=256, bias=True)
+              (2): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+          (gcfn): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+    )
+    (spk_split_block): SpkSplitStage(
+      (linear): Sequential(
+        (0): Conv1d(256, 2048, kernel_size=(1,), stride=(1,))
+        (1): GLU(dim=-2)
+        (2): Conv1d(1024, 512, kernel_size=(1,), stride=(1,))
+      )
+      (norm): GroupNorm(1, 256, eps=1e-08, affine=True)
+    )
+    (simple_fusion): ModuleList(
+      (0-3): 4 x Conv1d(512, 256, kernel_size=(1,), stride=(1,))
+    )
+    (dec_stages): ModuleList(
+      (0-3): 4 x SepDecStage(
+        (g_block_1): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_1): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (spk_attn_1): SpkAttention(
+          (self_attn): MultiHeadAttention(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear_q): Linear(in_features=256, out_features=256, bias=True)
+            (linear_k): Linear(in_features=256, out_features=256, bias=True)
+            (linear_v): Linear(in_features=256, out_features=256, bias=True)
+            (linear_out): Linear(in_features=256, out_features=256, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (Layer_scale): LayerScale()
+          )
+          (feed_forward): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+        (g_block_2): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_2): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (spk_attn_2): SpkAttention(
+          (self_attn): MultiHeadAttention(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear_q): Linear(in_features=256, out_features=256, bias=True)
+            (linear_k): Linear(in_features=256, out_features=256, bias=True)
+            (linear_v): Linear(in_features=256, out_features=256, bias=True)
+            (linear_out): Linear(in_features=256, out_features=256, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (Layer_scale): LayerScale()
+          )
+          (feed_forward): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+        (g_block_3): GlobalBlock(
+          (block): ModuleDict(
+            (ega): EGA(
+              (block): ModuleDict(
+                (self_attn): MultiHeadAttention(
+                  (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (linear_q): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_k): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_v): Linear(in_features=256, out_features=256, bias=True)
+                  (linear_out): Linear(in_features=256, out_features=256, bias=True)
+                  (dropout): Dropout(p=0.1, inplace=False)
+                  (Layer_scale): LayerScale()
+                )
+                (linear): Sequential(
+                  (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (1): Linear(in_features=256, out_features=256, bias=True)
+                  (2): Sigmoid()
+                )
+              )
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (l_block_3): LocalBlock(
+          (block): ModuleDict(
+            (cla): CLA(
+              (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (linear1): Linear(in_features=256, out_features=512, bias=True)
+              (GLU): GLU(dim=-1)
+              (dw_conv_1d): Conv1d(256, 256, kernel_size=(65,), stride=(1,), padding=same, groups=256)
+              (linear2): Linear(in_features=256, out_features=512, bias=True)
+              (BN): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (linear3): Sequential(
+                (0): GELU(approximate='none')
+                (1): Linear(in_features=512, out_features=256, bias=True)
+                (2): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+            (gcfn): GCFN(
+              (net1): Sequential(
+                (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                (1): Linear(in_features=256, out_features=1536, bias=True)
+              )
+              (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+              (net2): Sequential(
+                (0): GLU(dim=-1)
+                (1): Dropout(p=0.1, inplace=False)
+                (2): Linear(in_features=768, out_features=256, bias=True)
+                (3): Dropout(p=0.1, inplace=False)
+              )
+              (Layer_scale): LayerScale()
+            )
+          )
+        )
+        (spk_attn_3): SpkAttention(
+          (self_attn): MultiHeadAttention(
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear_q): Linear(in_features=256, out_features=256, bias=True)
+            (linear_k): Linear(in_features=256, out_features=256, bias=True)
+            (linear_v): Linear(in_features=256, out_features=256, bias=True)
+            (linear_out): Linear(in_features=256, out_features=256, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (Layer_scale): LayerScale()
+          )
+          (feed_forward): GCFN(
+            (net1): Sequential(
+              (0): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (1): Linear(in_features=256, out_features=1536, bias=True)
+            )
+            (depthwise): Conv1d(1536, 1536, kernel_size=(3,), stride=(1,), padding=(1,), groups=1536)
+            (net2): Sequential(
+              (0): GLU(dim=-1)
+              (1): Dropout(p=0.1, inplace=False)
+              (2): Linear(in_features=768, out_features=256, bias=True)
+              (3): Dropout(p=0.1, inplace=False)
+            )
+            (Layer_scale): LayerScale()
+          )
+        )
+      )
+    )
+  )
+  (out_layer): OutputLayer(
+    (spe_block): Masking(
+      (gate_act): ReLU()
+    )
+    (end_conv1x1): Sequential(
+      (0): Linear(in_features=256, out_features=1024, bias=True)
+      (1): GLU(dim=-1)
+      (2): Linear(in_features=512, out_features=256, bias=True)
+    )
+  )
+  (audio_decoder): AudioDecoder(256, 1, kernel_size=(16,), stride=(4,), bias=False)
+  (out_layer_bn): ModuleList(
+    (0-3): 4 x OutputLayer(
+      (spe_block): Masking(
+        (gate_act): ReLU()
+      )
+      (end_conv1x1): Sequential(
+        (0): Linear(in_features=256, out_features=1024, bias=True)
+        (1): GLU(dim=-1)
+        (2): Linear(in_features=512, out_features=256, bias=True)
+      )
+    )
+  )
+  (decoder_bn): ModuleList(
+    (0-3): 4 x AudioDecoder(256, 1, kernel_size=(16,), stride=(4,), bias=False)
+  )
+), {'train': <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8250>, 'valid': <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8190>, 'test': <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8430>}, [<PIT_SISNR_mag(device=device(type='cuda', index=0), frame_length=512, frame_shift=128, window='hann', num_stages=4, num_spks=2, scale_inv=True, mel_opt=False, stft = [STFT instance for 4 layers], mel_fb=Identity)>, <PIT_SISNR_time(device=device(type='cuda', index=0), num_spks=2, scale_inv=True)>, <PIT_SISNRi(device=device(type='cuda', index=0), num_spks=2, scale_inv=True)>, <PIT_SDRi(device=device(type='cuda', index=0), dump=0)>], [AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 0.0002
+    lr: 0.0
+    maximize: False
+    weight_decay: 0.01
+)], [<torch.optim.lr_scheduler.ReduceLROnPlateau object at 0x0000024F7D870F10>, <WarmupConstantSchedule(optimizer=AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 0.0002
+    lr: 0.0
+    maximize: False
+    weight_decay: 0.01
+), warmup_steps=1000, last_epoch=0, lr_lambda = <function WarmupConstantSchedule.__post_init__.<locals>.lr_lambda at 0x0000024F7D4CF760>)>], (0, 1, 2, 3), device(type='cuda', index=0)), kwargs={})
+2024-11-02 18:10:26.065 | INFO     | utils.util_engine:model_params_mac_summary:138 - ptflops: MACs: 170.34 GMac, Params: 56.82
+2024-11-02 18:10:26.601 | INFO     | utils.util_engine:model_params_mac_summary:144 - thop: MACs: 168.030554624 GMac, Params: 56.638208
+2024-11-02 18:10:27.116 | INFO     | utils.util_engine:model_params_mac_summary:150 - torchinfo: MACs: 18490.369024 GMac, Params: 56.816384
+2024-11-02 18:10:27.117 | INFO     | models.SepReformer_Large_DM_WSJ0.engine:__init__:47 - Clip gradient by 2-norm 5
+2024-11-02 18:10:27.117 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:43 - Exiting 'Engine' (result=<models.SepReformer_Large_DM_WSJ0.engine.Engine object at 0x0000024F7D870CD0>)
+2024-11-02 18:10:27.117 | DEBUG    | models.SepReformer_Large_DM_WSJ0.main:main:44 - Entering 'run' (args=(<models.SepReformer_Large_DM_WSJ0.engine.Engine object at 0x0000024F7D870CD0>,), kwargs={})
+2024-11-02 18:10:27.122 | INFO     | models.SepReformer_Large_DM_WSJ0.engine:run:168 - [INIT] Loss(time/mini-batch) 
+ - Epoch  1: Loss_t = 0.0000 dB | Loss_f = 0.0000 dB | Speed = (0.00s)
+2024-11-02 18:10:27.123 | DEBUG    | models.SepReformer_Large_DM_WSJ0.engine:run:172 - Entering '_train' (args=(<models.SepReformer_Large_DM_WSJ0.engine.Engine object at 0x0000024F7D870CD0>, <torch.utils.data.dataloader.DataLoader object at 0x0000024F7C1E8250>, 1), kwargs={})

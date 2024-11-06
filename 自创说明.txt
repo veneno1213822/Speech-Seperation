@@ -1,0 +1,27 @@
+使用kgcodeRTX3090服务器，环境tmp_AIdesignWJS_RTX3090，目录data2/tmp_AIdesign_WJS
+
+1、scp文件（Standard Copy Protocol）：音频文件的列表及其相关信息，常用于训练机器学习模型，特别是在语音处理和音频分离等任务中。
+在 YAML 配置中，SCP 文件是用于音频数据集的特定格式
+
+2、★★★运行步骤：
+（0）安装环境：pip install -r requirements.txt
+控制台输入 pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121 以手动下载GPU的torch
+如果太慢就输入 pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 -f https://mirrors.aliyun.com/pytorch-wheels/cu121 （-f指定额外的索引URL）
+（1）从原版WSJ0制作2MIX+scp：（可选）
+1）WSJ0原版内，create_wav_2speakers.m。得到的wsj0-mix文件夹移动到data/内
+2）data/内，create_scp_wsj.py，生成 data/scp_max_16k_wsj0
+3）设置模型读取数据集（现用Large_DM_WSJ0）：configs.yaml内“scp_dir: "./data/scp_max_16k_wsj0"”
+（2）模型训练、验证
+运行 run_1_train_LargeWSJ0.py，训练结束后自动验证。训练得到的模型会存入scratch_weights/，再次训练会自动读取文件夹内最新的。
+在models/模型名/configs.yaml里设置batch_size（24GB显存可设为4）、GPUID（只能在这里设置使用的GPU i.e. gpuid: "1,2,3"，代码里torch.cuda.set_device(1,2,3)、.sh脚本内export CUDA_VISIBLE_DEVICES=1,2,3都不行）
+（3）模型测试
+运行 run_2_test.py。自动使用最新的scratch_weights。
+24.11.3：SepReformer_Large_DM_WSJ0，epoch.0005.pth，SiSNRi=16.5, SDRi=16.7
+
+3、下载模型：
+models/.../log里写的“version https://git-lfs.github.com/spec/v1 oid sha256:336d6f40035e00496aacbe42c9ddf263d21b25dcb7941b5b90e245e9145043d2 size 178067890”
+是指Git LFS里存的。
+下载步骤：（win系统cmd就可以，git bash也行）
+git clone https://github.com/dmlguq456/SepReformer.git
+cd SepReformer（cd进有.git文件夹的目录，所以这里必须git clone，不能网页下载压缩包）
+git lfs pull（下载全部large file storage上存的大文件，会自动替换）

@@ -1,0 +1,20 @@
+
+# 忽略所有 __pycache__ 文件夹及其中的文件（无论是在当前目录还是子目录）
+__pycache__/
+现用Large_DM_WSJ0
+# PyCharm
+.idea/
+
+# 第一个/表示只忽略根目录的
+/旧、不用/
+/draft.py
+
+# 忽略根目录的 data 文件夹中的所有文件
+/data/*
+/Output/*
+# 但保留空的 data 文件夹
+!data/
+!Output/
+
+
+
